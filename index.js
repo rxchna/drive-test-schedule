@@ -17,8 +17,6 @@ const MONGO_DB_URL = process.env.DATABASE;
 
 mongoose.connect(MONGO_DB_URL, {useNewUrlParser: true});
 
-// TODO git: add .variables.env + .variables.env.tmp and add all url/portnumber
-
 /* Middleware for form validation */
 // G2 Form Validation
 const validateG2FormMiddleWare = (req, res, next) => {
