@@ -13,8 +13,14 @@
                 </div>
                 <div class="row gx-5 justify-content-center" id="g2-form-container">
                     <div class="col-lg-11 col-xl-9 col-xxl-8">
-                        <form id="g2_form">
+                        <form class="g_g2_form" method="POST" enctype="application/x-www-form-urlencoded" action="/users/store">
                             <div class="card shadow border-0 rounded-4 mb-5">
+                                <!-- Display error message on save of form if validation fails -->
+                                <% if (errorMessage) { %>
+                                    <div class="text-center input-error-msg">
+                                        <%= errorMessage %>
+                                    </div>
+                                <% } %>
                                 <!-- Personal Information Section-->
                                 <section class="card-body p-5">
                                     <div class="form-floating mb-4">
@@ -22,32 +28,32 @@
                                     </div>
                                     <!-- First Name -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="fname" type="text" placeholder="Enter your first name..." autofocus />
-                                        <label for="fname">First name</label>
+                                        <input class="form-control" id="firstname" name="firstname" type="text" placeholder="Enter your first name..." <% if (user && user.firstname) { %> value="<%= user.firstname %>"<% } %> autofocus />
+                                        <label for="firstname">First name</label>
                                     </div>
                                     <!-- Last Name -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="lname" type="text" placeholder="Enter your last name..." />
-                                        <label for="lname">Last name</label>
+                                        <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Enter your last name..." <% if (user && user.lastname) { %> value="<%= user.lastname %>" <% } %> />
+                                        <label for="lastname">Last name</label>
                                     </div>
                                     <!-- License Number -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="license_no" type="text" minlength="8" maxlength="8" placeholder="Enter your license number..." />
+                                        <input class="form-control" id="license_no" name="license_no" type="text" placeholder="Enter your license number..." <% if (user && user.license_no) { %> value="<%= user.license_no %>" <% } %> />
                                         <label for="license_no">Driver's License Number</label>
                                     </div>
                                     <!-- Email -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="user-email" type="text" placeholder="Enter your email address..." />
-                                        <label for="email">Email address</label>
+                                        <input class="form-control" id="email_add" name="email_add" type="text" placeholder="Enter your email address..." <% if (user && user.email_add) { %> value="<%= user.email_add %>" <% } %> />
+                                        <label for="email_add">Email address</label>
                                     </div>
                                     <!-- Age -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="user_age" type="number" min="16" placeholder="Enter your age..." />
+                                        <input class="form-control" id="user_age" name="user_age" type="number" placeholder="Enter your age..." <% if (user && user.user_age) { %> value="<%= user.user_age %>" <% } %> />
                                         <label for="user_age">Age</label>
                                     </div>
                                     <!-- DOB -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="user_dob" type="date" placeholder="Enter your date of birth..." />
+                                        <input class="form-control" id="user_dob" name="user_dob" type="date" placeholder="Enter your date of birth..." <% if (user && user.user_dob) { %> value="<%= user.user_dob %>" <% } %> />
                                         <label for="user_dob">Date of Birth</label>
                                     </div>
                                 </section>
@@ -58,27 +64,27 @@
                                     </div>
                                     <!-- Make -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="car_make" type="text" placeholder="Enter car make..." />
+                                        <input class="form-control" id="car_make" name="car_details[car_make]" type="text" placeholder="Enter car make..." <% if (user && user.car_details.car_make) { %> value="<%= user.car_details.car_make %>" <% } %> />
                                         <label for="car_make">Car Make</label>
                                     </div>
                                     <!-- Model -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="car_model" type="text" placeholder="Enter car model..." />
+                                        <input class="form-control" id="car_model" name="car_details[car_model]" type="text" placeholder="Enter car model..." <% if (user && user.car_details.car_model) { %> value="<%= user.car_details.car_model %>" <% } %> />
                                         <label for="car_model">Model</label>
                                     </div>
                                     <!-- Year -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="car_year" type="text" placeholder="Enter car year..." />
+                                        <input class="form-control" id="car_year" name="car_details[car_year]" type="text" placeholder="Enter car year..." <% if (user && user.car_details.car_year) { %> value="<%= user.car_details.car_year %>" <% } %> />
                                         <label for="car_year">Year</label>
                                     </div>
                                     <!-- Plate Number -->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="car_plate_no" type="text" placeholder="Enter car plate number..." />
+                                        <input class="form-control" id="car_plate_no" name="car_details[car_plate_no]" type="text" placeholder="Enter car plate number..." <% if (user && user.car_details.car_plate_no) { %> value="<%= user.car_details.car_plate_no %>" <% } %> />
                                         <label for="car_plate_no">Plate Number</label>
                                     </div>
                                 </section>
-                                <div class="text-center p-5">
-                                    <a class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" href="/g2_test">Submit</a>
+                                <div class="text-center p-5 submit-button">
+                                    <button class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" type="submit">Save</button>
                                 </div>
                             </div>
                         </form>

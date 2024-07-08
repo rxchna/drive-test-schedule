@@ -12,5 +12,10 @@ A kiosk application for picking time slots for G and G2 drive tests. The applica
 * EJS Templating Engine
 
 ## Set up backend
-1) npm install
-2) rename .variables.env.tmp to .variables.env
+1) create MongoDB Atlas account database url 
+2) change this file name .variables.env.tmp to .variables.env
+3) open .variables.env and paste your MongoDB url here : DATABASE=your-mongodb-url
+4) npm install
+
+## Start server
+1) npm start

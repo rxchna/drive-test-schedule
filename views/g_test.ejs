@@ -8,22 +8,150 @@
             <!-- Projects Section-->
             <section class="py-5">
                 <div class="container px-5 my-5">
-                    <div class="text-center mb-5">
-                        <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">G TEST</span></h2>
-                        <p class="lead fw-normal text-muted g-test-header-desc">Please enter your Driver's License Number to proceed.</p>
-                    </div>
-                    <div class="row gx-5 justify-content-center">
-                        <div class="col-lg-8 col-xl-6">
-                            <!-- License No input -->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="user-g-license" type="text" placeholder="Enter your license no." autofocus />
-                                <label for="user-g-license">Driver's License Number</label>
+                    <% if (!(showGForm || showNoUserContainer)) { %>
+                        <div class="text-center mb-5">
+                            <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">G TEST</span></h2>
+                            <p class="lead fw-normal text-muted g-test-header-desc" id="g_test_main_description">Please enter your Driver's License Number to proceed.</p>
+                        </div>
+                        <div class="row gx-5 justify-content-center">
+                            <form id="g_license_no_search_form" class="col-lg-8 col-xl-6" method="GET" enctype="application/x-www-form-urlencoded" action="/users/license_no">
+                                <!-- License No input -->
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="user-g-license" name="license_no" type="text" placeholder="Enter your license no." autofocus <% if (showNoUserContainer) { %> disabled <% } %> />
+                                    <label for="user-g-license">Driver's License Number</label>
+                                </div>
+                                <div class="text-center form-button">
+                                    <button class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" type="submit" <% if (showNoUserContainer) { %> disabled <% } %>>Submit</button>
+                                </div>
+                                <% if (errorMessage) { %>
+                                    <div class="text-center input-error-msg">
+                                        <%= errorMessage %>
+                                    </div>
+                                <% } %>
+                            </form>
+                        </div>
+                    <% } %> <!-- not working -->
+                    <% if (showNoUserContainer) { %>
+                    <!-- No User Found Container -->
+                        <div class="text-center mb-5">
+                            <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">G TEST</span></h2>
+                            <!-- <p class="lead fw-normal text-muted g-test-header-desc" id="g_test_main_description">No user matches the license number you entered.</p> -->
+                        </div>
+                        <div class="text-center" id="no-user-found-container">
+                            <div class="lead fw-normal text-muted g-test-header-desc">
+                                <div class="fw-bolder no-user-found-title">
+                                    <img src="../assets/warning-icon.png">
+                                    No User Found
+                                </div>
+                                <div class="fw-light no-user-additional-info">Please register your account on G2 Page or re-enter your correct license number.</div>
                             </div>
-                            <div class="text-center form-button">
-                                <a class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" href="/g_test">Submit</a>
+                            <div>
+                                <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/g2_test">G2 Page</a>
+                            </div>
+                            <div>
+                                <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" href="/g_test">
+                                    Re-Enter
+                                    <img src="../assets/input-again-icon.png">
+                                </a>
                             </div>
                         </div>
-                    </div>
+                    <% } %>
+                    <!-- User Details Form -->
+                    <% if (showGForm) { %>
+                        <div class="text-center mb-5">
+                            <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">G TEST</span></h2>
+                            <p class="lead fw-normal text-muted g-test-header-desc" id="g_test_main_description">Your current details are displayed below. Please make any necessary updates.</p>
+                        </div>
+                        <div class="row gx-5 justify-content-center" id="g-form-container">
+                            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                                <form class="g_g2_form" method="POST" enctype="application/x-www-form-urlencoded" action="/users/update/<%= user._id %>">
+                                    <div class="card shadow border-0 rounded-4 mb-5">
+                                        <!-- Display error message on save of form if validation fails -->
+                                        <% if (errorMessage) { %>
+                                            <div class="text-center input-error-msg">
+                                                <%= errorMessage %>
+                                            </div>
+                                        <% } %>
+                                        <!-- Personal Information Section-->
+                                        <section class="card-body p-5">
+                                            <div class="form-floating mb-4">
+                                                <h3 class="text-primary fw-bolder mb-0">Personal Information</h3>
+                                            </div>
+                                            <!-- First Name -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="firstname" name="firstname" type="text" placeholder="Enter your first name..." value="<%= user.firstname %>" disabled />
+                                                <label for="firstname">First name</label>
+                                            </div>
+                                            <!-- Last Name -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Enter your last name..." value="<%= user.lastname %>" disabled/>
+                                                <label for="lastname">Last name</label>
+                                            </div>
+                                            <!-- License Number -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="license_no" name="license_no" type="text" placeholder="Enter your license number..." value="<%= user.license_no %>" disabled/>
+                                                <label for="license_no">Driver's License Number</label>
+                                            </div>
+                                            <!-- Email -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="email_add" name="email_add" type="text" placeholder="Enter your email address..." value="<%= user.email_add %>" disabled/>
+                                                <label for="email_add">Email address</label>
+                                            </div>
+                                            <!-- Age -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="user_age" name="user_age" type="number" placeholder="Enter your age..." value="<%= user.user_age %>" disabled/>
+                                                <label for="user_age">Age</label>
+                                            </div>
+                                            <!-- DOB -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="user_dob" name="user_dob" type="date" placeholder="Enter your date of birth..." value="<%= user.user_dob.toISOString().split('T')[0] %>" disabled/> <!-- .toISOString().split('T')[0] used to display the date in the correct format on the input field -->
+                                                <label for="user_dob">Date of Birth</label>
+                                            </div>
+                                        </section>
+                                        <!-- Car Information Section-->
+                                        <section class="card-body p-5">
+                                            <div class="form-floating mb-4">
+                                                <h3 class="text-secondary fw-bolder mb-4">Car Information</h3>
+                                            </div>
+                                            <!-- Make -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="car_make" name="car_details[car_make]" type="text" placeholder="Enter car make..." value="<%= user.car_details.car_make %>" />
+                                                <label for="car_make">Car Make</label>
+                                            </div>
+                                            <!-- Model -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="car_model" name="car_details[car_model]" type="text" placeholder="Enter car model..." value="<%= user.car_details.car_model %>" />
+                                                <label for="car_model">Model</label>
+                                            </div>
+                                            <!-- Year -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="car_year" name="car_details[car_year]" type="text" placeholder="Enter car year..." value="<%= user.car_details.car_year %>" <% if (errorMessage) { %> autofocus <% } %> />
+                                                <label for="car_year">Year</label>
+                                            </div>
+                                            <!-- Plate Number -->
+                                            <div class="form-floating mb-3">
+                                                <!-- The value attribute of the input field is set to user.attribute_name, which prepopulates the form with the license number is submitted. -->
+                                                <input class="form-control" id="car_plate_no" name="car_details[car_plate_no]" type="text" placeholder="Enter car plate number..." value="<%= user.car_details.car_plate_no %>" />
+                                                <label for="car_plate_no">Plate Number</label>
+                                            </div>
+                                        </section>
+                                        <div class="text-center p-5 save-button">
+                                            <button class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" type="submit">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    <% } %>
                 </div>
             </section>
         </main>
