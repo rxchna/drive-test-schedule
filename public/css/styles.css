@@ -253,6 +253,76 @@ mark, .mark {
   z-index: 1;
 }
 
+#no-user-found-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 6em;
+  justify-content: center;
+  align-items: center;
+}
+
+#no-user-found-container > div:first-of-type {
+  grid-column: 1 / span 2;
+}
+
+#no-user-found-container > div:nth-of-type(2) {
+  justify-self: end;
+  margin-right: 1.5em;
+}
+#no-user-found-container > div:nth-of-type(3) {
+  justify-self: start;
+  margin-left: 1.5em;
+}
+
+.no-user-additional-info {
+  font-size: 0.9em;
+  margin-top: 0.5em;
+}
+
+.no-user-found-title {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: -2em;
+}
+
+.no-user-found-title img {
+  width: 2em;
+  margin-right: 0.5em;
+  margin-bottom: 0.7em;
+}
+
+#no-user-found-container div a img {
+  width: 2em;
+  margin-left: 0.5em;
+  margin-top: -0.3em;
+}
+
+#no-user-found-container div a {
+  margin-top: 0.5em;
+}
+
+#no-user-found-container > div:nth-of-type(3) a {
+  padding-left: 2em !important;
+  padding-right: 2em !important;
+  /* background-color: red; */
+}
+
+#g-form-container {
+  margin-top: 2.8em;
+}
+/* 
+.disabled-field {
+  background-color: #e9ecef !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+} */
+
+.input-error-msg {
+  color: red !important;
+  margin-top: 2.5rem !important;
+}
+
 @media (max-width: 1399px) {
   .profile {
     margin-top: 5vw !important;
@@ -337,11 +407,11 @@ hr {
   color: white;
 }
 
-#g2_form .card-body div:last-child {
+.g_g2_form .card-body div:last-child {
   margin-bottom: 0 !important;
 }
 
-#g2_form section {
+.g_g2_form section {
   padding-bottom: 0 !important;
 }
 
