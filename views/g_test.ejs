@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('layouts/header') -%>
+    <body class="d-flex flex-column h-100 bg-light">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <%- include('layouts/navbar') -%>
+            <!-- Projects Section-->
+            <section class="py-5">
+                <div class="container px-5 my-5">
+                    <div class="text-center mb-5">
+                        <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">G TEST</span></h2>
+                        <p class="lead fw-normal text-muted g-test-header-desc">Please enter your Driver's License Number to proceed.</p>
+                    </div>
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-8 col-xl-6">
+                            <!-- License No input -->
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="user-g-license" type="text" placeholder="Enter your license no." autofocus />
+                                <label for="user-g-license">Driver's License Number</label>
+                            </div>
+                            <div class="text-center form-button">
+                                <a class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" href="/g_test">Submit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Footer-->
+        <%- include('layouts/footer') -%>
+        <!-- Bootstrap core JS-->
+        <%- include('layouts/scripts') -%>
+    </body>
+</html>

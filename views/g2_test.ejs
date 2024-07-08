@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('layouts/header') -%>
+    <body class="d-flex flex-column h-100 bg-light">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <%- include('layouts/navbar') -%>
+            <!-- Page Content-->
+            <div class="container px-5 my-5">
+                <div class="text-center my-5">
+                    <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">G2 TEST</span></h2>
+                    <p class="lead fw-normal text-muted g-test-header-desc">Please complete the form below to proceed.</p>
+                </div>
+                <div class="row gx-5 justify-content-center" id="g2-form-container">
+                    <div class="col-lg-11 col-xl-9 col-xxl-8">
+                        <form id="g2_form">
+                            <div class="card shadow border-0 rounded-4 mb-5">
+                                <!-- Personal Information Section-->
+                                <section class="card-body p-5">
+                                    <div class="form-floating mb-4">
+                                        <h3 class="text-primary fw-bolder mb-0">Personal Information</h3>
+                                    </div>
+                                    <!-- First Name -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="fname" type="text" placeholder="Enter your first name..." autofocus />
+                                        <label for="fname">First name</label>
+                                    </div>
+                                    <!-- Last Name -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="lname" type="text" placeholder="Enter your last name..." />
+                                        <label for="lname">Last name</label>
+                                    </div>
+                                    <!-- License Number -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="license_no" type="text" minlength="8" maxlength="8" placeholder="Enter your license number..." />
+                                        <label for="license_no">Driver's License Number</label>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="user-email" type="text" placeholder="Enter your email address..." />
+                                        <label for="email">Email address</label>
+                                    </div>
+                                    <!-- Age -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="user_age" type="number" min="16" placeholder="Enter your age..." />
+                                        <label for="user_age">Age</label>
+                                    </div>
+                                    <!-- DOB -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="user_dob" type="date" placeholder="Enter your date of birth..." />
+                                        <label for="user_dob">Date of Birth</label>
+                                    </div>
+                                </section>
+                                <!-- Car Information Section-->
+                                <section class="card-body p-5">
+                                    <div class="form-floating mb-4">
+                                        <h3 class="text-secondary fw-bolder mb-4">Car Information</h3>
+                                    </div>
+                                    <!-- Make -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="car_make" type="text" placeholder="Enter car make..." />
+                                        <label for="car_make">Car Make</label>
+                                    </div>
+                                    <!-- Model -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="car_model" type="text" placeholder="Enter car model..." />
+                                        <label for="car_model">Model</label>
+                                    </div>
+                                    <!-- Year -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="car_year" type="text" placeholder="Enter car year..." />
+                                        <label for="car_year">Year</label>
+                                    </div>
+                                    <!-- Plate Number -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="car_plate_no" type="text" placeholder="Enter car plate number..." />
+                                        <label for="car_plate_no">Plate Number</label>
+                                    </div>
+                                </section>
+                                <div class="text-center p-5">
+                                    <a class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" href="/g2_test">Submit</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer-->
+        <%- include('layouts/footer') -%>
+        <%- include('layouts/scripts') -%>
+    </body>
+</html>
