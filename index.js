@@ -1,215 +1,95 @@
 const express = require('express');
 const path = require('path');
 const ejs = require('ejs');
+require('dotenv').config({ path: '.variables.env' }); // Load environment variables
 const mongoose = require('mongoose');
 const UserModel = require('./models/User');
-require('dotenv').config({ path: '.variables.env' }); // Load environment variables
+const bcrypt = require('bcrypt');
+const { error } = require('console');
+const { hash } = require('crypto');
+const expressSession = require('express-session');
+
+// .env variables - store sensitive information on environment file
+const PORT_NO = process.env.PORT;
+const MONGO_DB_URL = process.env.DATABASE;
+const SECRET_SESSION_KEY = process.env.SECRET;
+
+// Global variables
+global.isLoggedIn = null;
+global.isTypeDriver = null;
 
 const app = new express();
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(expressSession({
+    secret: SECRET_SESSION_KEY
+}));
 
-// .env variables
-const PORT_NO = process.env.PORT;
-const MONGO_DB_URL = process.env.DATABASE;
+// Middleware executed on all requests
+app.use("*", (req, res, next) => {
+    isLoggedIn = req.session.userId;
+    isTypeDriver = req.session.userType === "type-driver";
+    next();
+})
 
 mongoose.connect(MONGO_DB_URL, {useNewUrlParser: true});
-
-/* Middleware for form validation */
-// G2 Form Validation
-const validateG2FormMiddleWare = (req, res, next) => {
-    let errorMessage = validateData(req.body);
-    console.log("req.body: ", req.body);
-    // Check if input fields of personal information and car information are null
-    if(errorMessage) {
-        return res.render('g2_test', {
-            user: req.body,
-            errorMessage
-        });
-    }
-    next();
-}
-
-/* G Form Validation */
-const validateGFormMiddleWare = async (req, res, next) => {
-    let errorMessage = validateCarInformationData(req.body);
-
-    // Check if input fields of personal information and car information are null
-    if(errorMessage) {
-
-        // Display back original user details
-        const user = await UserModel.findById(req.params.id);
-
-        return res.render('g_test', {
-            showGForm : true, /* makes G form visible */
-            showNoUserContainer: false,
-            user,
-            errorMessage
-        });
-    }
-    next();
-}
-
-/* Validation for fetch User By license number: ensures a null value is not input */
-const validateLicenseNoInput = (req, res, next) => {
-    
-    const license_no = req.query.license_no;
-
-    // Return with error message if license number input is null
-    if(!license_no) {
-        const errorMessage = "Please enter a valid license number.";
-
-        // Render g page with error message
-        return res.render('g_test', { 
-            showGForm: false, 
-            showNoUserContainer: false,
-            errorMessage
-        });
-    }
-    next();
-}
 
 app.listen(PORT_NO, () => {
     console.log(`#rp: App listening on port ${PORT_NO}`);
 });
 
-app.get('/', (req, res) => {
-    res.render('index');
-});
+// Controllers
+const dashboardController = require("./controllers/dashboardPageController");
+const gPageController = require("./controllers/gPageController");
+const g2PageController = require("./controllers/g2PageController");
+const loginPageController = require("./controllers/loginPageController");
+const registerPageController = require("./controllers/registerPageController");
 
-app.get('/dashboard', (req, res) => {
-    res.render('index');
-});
+const registerUserController = require("./controllers/registerUserController");
+const loginUserController = require("./controllers/loginUserController");
+const logoutUserController = require("./controllers/logoutUserController");
+const storeG2Controller = require("./controllers/storeG2Controller");
+const storeGController = require("./controllers/storeGController");
 
-app.get('/g_test', (req, res) => {
-    res.render('g_test', { 
-        showGForm: false, 
-        showNoUserContainer: false,
-        errorMessage: false
-    }); /* GForm and showNoUserContainer is set to invisible on loading of the page */
-});
+// Middleware
+const validateRegistration = require("./middleware/validateRegistrationMiddleware");
+const validateLoginMiddleware = require("./middleware/validateLoginMiddleware");
+const validateG2FormMiddleware = require("./middleware/validateG2Middleware");
+const validateGFormMiddleware = require("./middleware/validateGMiddleware");
 
-app.get('/g2_test', (req, res) => {
-    const user = new UserModel(); /* Adding blank user on load for validation function to save prefilled values if validation fails */
-    res.render('g2_test', {
-        user,
-        errorMessage: ''
-    });
-});
+/* Middleware to protect pages from being accessed by users not logged in -> redirect to dashboard */
+const authMiddleware = require("./middleware/authMiddleware");
 
-app.get('/login', (req, res) => {
-    res.render('login');
-});
+/* Middleware to protect pages from being accessed by users not of type driver -> redirect to dashboard */
+const authDriverMiddleWare = require("./middleware/authDriverMiddleware");
 
-/* Method to create user */
-app.post('/users/store', validateG2FormMiddleWare, async (req, res) => {
-    try {
-        const user = await UserModel.create({
-            ...req.body
-        });
-        res.redirect('/');
-    }
-    catch(error) {
-        console.log(error);
-    }
-});
+/* Middleware to prevent login or register if user is already logged in -> redirect to dashboard */
+const redirectIfAuthMiddleware = require("./middleware/redirectIfAuthMiddleware");
 
-/* Method to read user according to input license number */
-app.get('/users/:license_no', validateLicenseNoInput, async (req, res) => {
-    try {
-        const license_no = req.query.license_no;
-        const users = await UserModel.find({ license_no: license_no });
+// Routes
+app.get('/', dashboardController);
+app.get('/dashboard', dashboardController);
+app.get('/g_test', authMiddleware, authDriverMiddleWare, gPageController);
+app.get('/g2_test', authMiddleware, authDriverMiddleWare, g2PageController);
+app.get('/login', redirectIfAuthMiddleware, loginPageController);
+app.get('/register', redirectIfAuthMiddleware, registerPageController);
 
-        if (users.length == 0) {
-            // No user found, display no-user-container
-            res.render('g_test', {
-                showNoUserContainer : true,
-                showGForm: false
-            });
-        }
-        else {
-            /* Display user details on g-form */
-            let user = users[0];
-            res.render('g_test', {
-                showGForm : true, /* makes G form visible */
-                showNoUserContainer: false,
-                user,
-                errorMessage: ''
-            });
-        }
-    } catch (error) {
-        console.log(error);
-    }
-});
+/* Method to store user G2 details */
+app.post('/users/store', validateG2FormMiddleware, storeG2Controller);
 
 /* Method to update user data after an update is done on G Page form */
-app.post('/users/update/:id', validateGFormMiddleWare, async (req, res) => {
-    try {
-        // Update user details
-        const updatedUser = await UserModel.findByIdAndUpdate(req.params.id,
-            {
-                car_details: req.body.car_details
-            }, { new: true } /* By default Mongoose returns the original document before the update. { new: true }, Mongoose returns document after the update. */
-        );
+app.post('/users/update', validateGFormMiddleware, storeGController);
 
-        // Display g_test form with updated values
-        res.render('g_test', {
-            showGForm : true, /* makes G form visible */
-            showNoUserContainer: false,
-            user: updatedUser,
-            errorMessage: ''
-        });
-    } catch (error) {
-        console.log(error);
-    }
-});
+/* Register new user */
+app.post('/auth/register', validateRegistration, registerUserController);
 
-/* Function to validate Personal Information and Car Information input data */
-function validateData(userData) {
-    if(!userData.firstname || 
-        !userData.lastname || 
-        !userData.license_no || 
-        !userData.email_add || 
-        !userData.user_age || 
-        !userData.user_dob || 
-        !userData.car_details.car_make ||
-        !userData.car_details.car_model || 
-        !userData.car_details.car_year ||
-        !userData.car_details.car_plate_no
-    ) {
-        return "Please ensure all fields are filled out before submitting the form.";
-    }
-    // User age should not be less than 16
-    if(userData.user_age && userData.user_age < 16) {
-        return "Age must be 16 years or older.";
-    }
-    // User dob cannot be in the future
-    if(userData.user_dob && new Date(userData.user_dob) > new Date()) {
-        return "Date of birth cannot be in the future.";
-    }
-    // Car year should be 4-digit number
-    const errDataValidated = validateCarInformationData(userData);
+/* Method for user login */
+app.post('/auth/login', validateLoginMiddleware, loginUserController);
 
-    // Returns empty string if data is validated
-    return errDataValidated;
-}
+/* Method for user logout */
+app.get('/auth/logout', authMiddleware, logoutUserController);
 
-function validateCarInformationData(userData) {
-    if(!userData.car_details.car_make ||
-        !userData.car_details.car_model || 
-        !userData.car_details.car_year ||
-        !userData.car_details.car_plate_no
-    ) {
-        return "Please ensure all Car Information fields are filled out before submitting the form.";
-    }
-
-    // Car year should be 4-digit number
-    if(userData.car_details.car_year && (
-        userData.car_details.car_year.length !== 4 || 
-        isNaN(userData.car_details.car_year))) {
-        return "Car year must be a valid four-digit number.";
-    }
-    return "";
-}
+/* Render "404 not found" page for unrecognized route */
+app.use((req, res) => res.render('not_found'));

@@ -124,13 +124,18 @@ h1, .h1 {
   font-size: calc(1.375rem + 1.5vw);
 }
 
-#sign-in-up-main-container {
-  margin-top: 2em;
+#sign-in-up-main-container, #not-found-container {
+  margin-top: 2em !important;
 }
 
-#login-container {
+#login-container, #register-container, #error-404-container {
   padding-top: 3rem !important;
   margin-top: 3r;
+}
+
+#error-404-container img {
+  margin-bottom: 1em;
+  width: 7em;
 }
 
 .form-button {
@@ -138,9 +143,19 @@ h1, .h1 {
   margin-bottom: 1em;
 }
 
-.page-under-construction img {
-  max-width: 30em;
-  margin-top: 5em;
+.sign-up-option {
+  margin-top: 2.5em;
+  margin-bottom: 1.5em;
+}
+
+.sign-up-link {
+  letter-spacing: 1px;
+  border-bottom: 1px solid;
+}
+
+.logged-out-header {
+  margin-top: 0.3em;
+  margin-bottom: 1em;
 }
 
 @media (min-width: 1200px) {
@@ -253,33 +268,7 @@ mark, .mark {
   z-index: 1;
 }
 
-#no-user-found-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin-top: 6em;
-  justify-content: center;
-  align-items: center;
-}
-
-#no-user-found-container > div:first-of-type {
-  grid-column: 1 / span 2;
-}
-
-#no-user-found-container > div:nth-of-type(2) {
-  justify-self: end;
-  margin-right: 1.5em;
-}
-#no-user-found-container > div:nth-of-type(3) {
-  justify-self: start;
-  margin-left: 1.5em;
-}
-
-.no-user-additional-info {
-  font-size: 0.9em;
-  margin-top: 0.5em;
-}
-
-.no-user-found-title {
+.no-user-found-title, .registration-successful-title {
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-left: -2em;
@@ -291,36 +280,35 @@ mark, .mark {
   margin-bottom: 0.7em;
 }
 
-#no-user-found-container div a img {
+.registration-successful-title img {
   width: 2em;
   margin-left: 0.5em;
-  margin-top: -0.3em;
+  margin-bottom: 0.5em;
 }
 
-#no-user-found-container div a {
-  margin-top: 0.5em;
-}
-
-#no-user-found-container > div:nth-of-type(3) a {
-  padding-left: 2em !important;
-  padding-right: 2em !important;
-  /* background-color: red; */
+#user-registration-success div a {
+  margin-bottom: 2em;
 }
 
 #g-form-container {
   margin-top: 2.8em;
 }
-/* 
-.disabled-field {
+
+.input-disabled {
   background-color: #e9ecef !important;
-  color: #666 !important;
   cursor: not-allowed !important;
   pointer-events: none !important;
-} */
+}
 
 .input-error-msg {
   color: red !important;
   margin-top: 2.5rem !important;
+}
+
+.input-error-msg-signupin {
+  color: red !important;
+  margin-top: 1em;
+  margin-bottom: -1em;
 }
 
 @media (max-width: 1399px) {
@@ -415,7 +403,7 @@ hr {
   padding-bottom: 0 !important;
 }
 
-.g-test-header-desc {
+.g-test-header-desc, .user-registration-success {
   margin-top: 1em !important;
   margin-bottom: 1.8em !important;
 }

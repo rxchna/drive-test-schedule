@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('layouts/header') -%>
+    <body class="d-flex flex-column">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <%- include('layouts/navbar') -%>
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5" id="sign-in-up-main-container">
+                    <div class="bg-light rounded-4 py-5 px-4 px-md-5" id="register-container">
+                        <% if (!userRegisteredSuccess) { %>
+                            <!-- Sign Up form-->
+                            <div class="text-center mb-5">
+                                <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
+                                <h1 class="fw-bolder">Sign Up</h1>
+                                <p class="lead fw-normal text-muted mb-0">Register now to schedule your road test online.</p>
+                                <!-- Display error message if validation fails -->
+                                <% if (errorMessage) { %>
+                                    <div class="text-center input-error-msg-signupin">
+                                        <%= errorMessage %>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="row gx-5 justify-content-center">
+                                <div class="col-lg-8 col-xl-6">
+                                    <form id="signUpForm" method="POST" enctype="application/x-www-form-urlencoded" action="/auth/register">
+                                        <!-- Name input-->
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="username" name="username" type="text" placeholder="Enter your username..." autofocus />
+                                            <label for="username">Username</label>
+                                        </div>
+                                        <!-- Password input-->
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="user_password" name="user_password" type="password" placeholder="********" />
+                                            <label for="user_password">Password</label>
+                                        </div>
+                                        <!-- Password input-->
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="user_confirm_password" name="user_confirm_password" type="password" placeholder="********" />
+                                            <label for="user_confirm_password">Confirm Password</label>
+                                        </div>
+                                        <!-- User Type input-->
+                                        <div class="form-floating mb-3">
+                                            <select class="form-control" id="user_type" name="user_type">
+                                                <option value="type-driver" selected>Driver</option>
+                                                <option value="type-examiner">Examiner</option>
+                                                <option value="type-admin">Admin</option>
+                                            </select>
+                                            <label for="user_type">User Type</label>
+                                        </div>
+                                        <!-- Register button -->
+                                        <div class="text-center form-button">
+                                            <button class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" type="submit">Register</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        <% } %>
+                        <!-- Registration Success Container -->
+                        <% if (userRegisteredSuccess) { %>
+                            <div class="text-center" id="user-registration-success">
+                                <div class="lead fw-normal text-muted user-registration-success">
+                                    <div class="fw-bolder registration-successful-title">
+                                        User Registration Success
+                                        <img src="/assets/confirmation-icon.png" />
+                                    </div>
+                                    <p class="lead fw-normal text-muted mb-0">Please login to continue.</p>
+                                </div>
+                                <div>
+                                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="/login">Login</a>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Footer-->
+        <%- include('layouts/footer') -%>
+        <%- include('layouts/scripts') -%>
+    </body>
+</html>
