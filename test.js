@@ -33,7 +33,6 @@ async function createUser() {
 async function readAllUsers() {
     try {
         const users = await UserModel.find({});
-        console.log('All users: ', users);
     } catch (error) {
         console.log(error);
     }

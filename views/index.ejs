@@ -18,13 +18,21 @@
                                 <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
                                     <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" href="https://drivetest.ca/" target="_blank">DriveTest</a> <!-- Redirects to official page of DriveTest Center -->
                                     <div class="booking-dropdown">
-                                        <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder booking-dropdown-button" href="#">Book <span class="text-gradient">&nbsp;&nbsp;&nbsp;<i class="bi bi-caret-down-fill"></i></span></a>
-                                        <!-- A dropdown menu redirecting to G2 or G page on hover/click of the "Book" button -->
-                                        <div class="booking-dropdown-content">
-                                            <a href="/g2_test">Class G2 Road Test <span class="text-gradient">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-arrow-right"></i></span></a>
-                                            <hr>
-                                            <a href="/g_test">Class G Road Test <span class="text-gradient">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-arrow-right"></i></span></a>
-                                        </div>
+                                        <!-- If not session, redirect to login when clicking on "book" icon-->
+                                        <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder booking-dropdown-button" href="<% if (!isLoggedIn) { %> /login <% } else { %> # <% } %>">Book 
+                                            <% if (isLoggedIn) { %>
+                                                <span class="text-gradient">&nbsp;&nbsp;&nbsp;<i class="bi bi-caret-down-fill"></i></span>
+                                            <% } %>
+                                        </a>
+                                        <!-- If user is logged in, display dropdown -->
+                                        <% if (isLoggedIn) { %>
+                                            <!-- A dropdown menu redirecting to G2 or G page on hover/click of the "Book" button -->
+                                            <div class="booking-dropdown-content">
+                                                <a href="/g2_test">Class G2 Road Test <span class="text-gradient">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-arrow-right"></i></span></a>
+                                                <hr>
+                                                <a href="/g_test">Class G Road Test <span class="text-gradient">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-arrow-right"></i></span></a>
+                                            </div>
+                                        <% } %>
                                     </div>
                                     
                                 </div>
