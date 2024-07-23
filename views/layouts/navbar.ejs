@@ -9,12 +9,15 @@
                     <li class="nav-item"><a class="nav-link" href="/g2_test">G2</a></li>
                     <li class="nav-item"><a class="nav-link" href="/g_test">G</a></li>
                 <% } %>
-                <% if(!isLoggedIn) { %>
-                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                <% if(isLoggedIn && isTypeAdmin) { %>
+                    <li class="nav-item"><a class="nav-link" href="/appointment">Appointment</a></li>
                 <% } %>
                 <% if(isLoggedIn) { %>
                     <li class="nav-item"><a class="nav-link" href="/auth/logout">Logout</a></li>
+                <% } %>
+                <% if(!isLoggedIn) { %>
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                 <% } %>
             </ul>
         </div>

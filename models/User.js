@@ -68,6 +68,11 @@ const UserModelSchema = new Schema({
             required: true,
             default: 'default'
         }
+    },
+    /* Appointment details */
+    g2_appointment_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Appointment'
     }
 });
 

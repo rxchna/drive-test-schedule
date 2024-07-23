@@ -6,11 +6,12 @@
             <!-- Navigation-->
             <%- include('layouts/navbar') -%>
             <!-- Page Content-->
-            <div class="container px-5 my-5">
-                <div class="text-center my-5">
+            <div class="container px-5 my-5" id="g2_content">
+                <div class="text-center my-5" id="g2_content_header">
                     <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">G2 TEST</span></h2>
-                    <p class="lead fw-normal text-muted g-test-header-desc">Please complete the form below to proceed.</p>
+                    <p class="lead fw-normal text-muted g-test-header-desc">Please complete the form below to book your G2.</p>
                 </div>
+                <!-- G2 User Details Form -->
                 <div class="row gx-5 justify-content-center" id="g2-form-container">
                     <div class="col-lg-11 col-xl-9 col-xxl-8">
                         <form class="g_g2_form" method="POST" enctype="application/x-www-form-urlencoded" action="/users/store">
@@ -90,6 +91,74 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+                <!-- Appointment form is disabled if g2 user details have not been input -->
+                <div class="<%= firstUserInput ? 'appointment-form-disabled' : '' %>">
+                    <!-- Booking form -->
+                    <div class="row gx-5 justify-content-center" id="g2_appointment_form">
+                        <div class="col-lg-11 col-xl-9 col-xxl-8">
+                            <div class="card shadow border-0 rounded-4 mb-5">
+                                <div class="card-body p-5" id="g2_appointment_header">
+                                    <div class="form-floating mb-4">
+                                        <h3 class="text-gradient fw-bolder mb-4">Appointment</h3>
+                                    </div>
+                                </div>
+                                <!-- Appointment Date Selection form -->
+                                <% if (appointmentTimeBooked) { %>
+                                    <section class="card-body p-5 text-center" id="g2-appointment-information">
+                                        <div class="appointment-info-container">
+                                            <div>
+                                                <img src="/assets/appointment-booked-icon.png" />
+                                            </div>
+                                            Your appointment is booked for <%= appointment_date %> at <%= appointmentTimeBooked %>.
+                                        </div>
+                                    </section>
+                                <% } else { %>
+                                    <% if (appointment_booking_error) { %>
+                                        <!-- Section to display error on saving appointment -->
+                                        <div class="text-center g2-appointment-error-msg">
+                                            <%= appointment_booking_error %>
+                                        </div>
+                                    <% } %>
+                                    <form id="g2_date_input_form" method="POST" enctype="application/x-www-form-urlencoded" action="/userAppointmentDate/loadTimeSlots">
+                                        <!-- Appointment Input Date -->
+                                        <section class="card-body p-5" id="g2_app_main_date_input">
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="user_appointment_date" name="user_appointment_date" type="date" placeholder="Enter date..." value="<%= appointment_date %>" min="<%= current_date %>" onChange="this.form.submit()" />
+                                                <label for="car_details[car_make]">Appointment Date</label>
+                                            </div>
+                                        </section>
+                                    </form>
+
+                                    <!-- Appointment Booking Form -->
+                                    <form class="g_g2_form" method="POST" enctype="application/x-www-form-urlencoded" action="/appointments/updateG2Appointment">
+                                        <section class="card-body p-5" id="g2_app_booking_form">
+                                            <!-- Appointment Hidden Date -->
+                                            <input type="hidden" class="form-control" id="user_appointment_date" name="user_appointment_date" type="date" placeholder="Enter date..." value="<%= appointment_date %>" />
+
+                                            <!-- Time Slots for selected date -->
+                                            <% if (available_time_slots) { %>
+                                                <fieldset class="g2-time-slot-fieldset">
+                                                    <legend>Select your preferred time slot</legend>
+                                                    <% available_time_slots.forEach((slot, index) => { %>
+                                                        <label class="form-check-label btn btn-outline-primary m-2 time-slot">
+                                                            <input class="form-check-input" type="radio" name="time_slot" value="<%= slot %>" >
+                                                            <span class="apt-time"><%= slot %></span>
+                                                        </label>
+                                                    <% }) %>
+                                                </fieldset>
+                                            <% } else { %>
+                                                <div class="g2-no-time-slots-available">No time slots available for the selected date. Please choose a different date.</div>
+                                            <% } %>
+                                        </section>
+                                        <div class="text-center p-5 submit-button">
+                                            <button class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" type="submit">Book Appointment</button>
+                                        </div>
+                                    </form>
+                                <% } %>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
