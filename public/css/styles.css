@@ -124,11 +124,11 @@ h1, .h1 {
   font-size: calc(1.375rem + 1.5vw);
 }
 
-#sign-in-up-main-container, #not-found-container {
+#sign-in-up-main-container, #not-found-container, #appointment_creation_container {
   margin-top: 2em !important;
 }
 
-#login-container, #register-container, #error-404-container {
+#login-container, #register-container, #error-404-container, #apt-container {
   padding-top: 3rem !important;
   margin-top: 3r;
 }
@@ -280,10 +280,15 @@ mark, .mark {
   margin-bottom: 0.7em;
 }
 
-.registration-successful-title img {
+.registration-successful-title img, .appointments-save-confirmation-msg img, .appointments-error-msg img {
   width: 2em;
   margin-left: 0.5em;
   margin-bottom: 0.5em;
+}
+
+#g2-appointment-information img {
+  width: 3em;
+  margin-bottom: 0.6em;
 }
 
 #user-registration-success div a {
@@ -309,6 +314,35 @@ mark, .mark {
   color: red !important;
   margin-top: 1em;
   margin-bottom: -1em;
+}
+
+.g2-appointment-error-msg {
+  color: red !important;
+  margin-bottom: 2rem !important;
+}
+
+.appointment-info-container {
+  margin-top: -1.5em;
+}
+
+.appointment-form-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.appointment-form-disabled input,
+.appointment-form-disabled select,
+.appointment-form-disabled textarea {
+  pointer-events: none;
+  opacity: 0.8;
+  background-color: #f0f0f0;
+}
+
+.appointment-form-disabled button {
+  pointer-events: none;
+  opacity: 0.8;
+  background-color: #a4a4a4;
+  border-color: transparent;
 }
 
 @media (max-width: 1399px) {
@@ -406,6 +440,108 @@ hr {
 .g-test-header-desc, .user-registration-success {
   margin-top: 1em !important;
   margin-bottom: 1.8em !important;
+}
+
+.create-appointment {
+  margin-top: 1em;
+}
+
+#time_slots_container {
+  width: 150% !important;
+  margin-left: -25%;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  align-items: center;
+  justify-items: center;
+  margin-top: 2em;
+  row-gap: 0.5em;
+}
+
+.time-slot {
+  width: 7em;
+  height: 3em;
+  height: auto;
+  border-radius: 1.5em !important;
+  box-shadow: 2px 4px 8px rgba(33, 33, 33, 0.1);
+  padding-top: 1em !important;
+  padding-bottom: 1em !important;
+}
+
+.time-slot-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  border-color: #6c757dca !important;
+  background-color: #6c757dca !important;
+}
+
+.apt-time {
+  margin-left: 0.5em;
+}
+
+.time-slot-disabled .apt-time {
+  color: white;
+}
+
+.time-slot-disabled .form-check-input:checked {
+  background-color: #6c757d00;
+  border-color: #6c757d00;
+}
+
+.save-apt {
+  margin-bottom: 2em !important;
+}
+
+.appointments-save-confirmation-msg {
+  color: rgb(12, 169, 12);
+  margin-bottom: 1em;
+}
+
+.appointments-error-msg {
+  color: red;
+  margin-bottom: 1em;
+  margin-top: -1em;
+}
+
+/* #g2_content {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 10em auto;
+  justify-items: center;
+  align-items: center;
+}
+
+#g2_content_header {
+  grid-column: 1 / span 2;
+} */
+
+/* #g2-main-container {
+  /* display: grid;
+  width: 100vw;
+} */
+
+.g2-time-slot-fieldset {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.5em;
+  margin-top: 0.5em;
+  padding-bottom: 1.5em;
+}
+
+.g2-time-slot-fieldset legend {
+  padding: 0 10px;
+  float: none;
+  width: auto;
+  color: #767676;
+  font-size: 0.9em;
+}
+
+.g2-no-time-slots-available {
+  color: orange;
+  padding: 1em 0.5em;
 }
 
 sub,
@@ -2449,7 +2585,7 @@ textarea.form-control-lg {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
 }
 .form-check-input:checked[type=radio] {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+  box-shadow: 0 0 0 2px #fff inset;
 }
 .form-check-input[type=checkbox]:indeterminate {
   background-color: #1e30f3;
@@ -4497,6 +4633,19 @@ textarea.form-control-lg {
 
 .g2_details section {
   width: 30em;
+}
+
+#g2_appointment_header {
+  padding-bottom: 0 !important;
+}
+
+#g2_app_main_date_input {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#g2_app_booking_form, #g2-appointment-information {
+  padding-top: 0 !important;
 }
 
 @media (min-width: 576px) {

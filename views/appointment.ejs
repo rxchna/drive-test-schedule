@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('layouts/header') -%>
+    <body class="d-flex flex-column">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <%- include('layouts/navbar') -%>
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5" id="appointment_creation_container">
+                    <div class="bg-light rounded-4 py-5 px-4 px-md-5" id="apt-container">
+                        <div class="text-center mb-5">
+                            <h1 class="fw-bolder"><span class="text-gradient d-inline">Create Appointment Slots</span></h1>
+                            <p class="lead fw-normal text-muted mb-0 create-appointment">Choose a date, add appointment slots by selecting the available times, and save changes.</p>
+                        </div>
+
+                        <!-- Error message -->
+                        <% if (appointment_error_message) { %>
+                            <div class="text-center appointments-error-msg">
+                                <%= appointment_error_message %>
+                                <img src="/assets/error-icon.png" />
+                            </div>
+                        <% } %>
+
+                        <!-- Main appointment container -->
+                        <div class="row gx-5 justify-content-center">
+                            <div class="col-lg-8 col-xl-6">
+                                <!-- Form for selecting date and load available time slots -->
+                                <form id="date_input_form" method="POST" enctype="application/x-www-form-urlencoded" action="/appointmentDate/loadTimeSlots"> <!-- Change in date field will load available time slots for selected date -->
+                                    <!-- Date picker -->
+                                    <div class="form-floating mb-3" id="calendar-container">
+                                        <input class="form-control mb-3" type="date" id="appointment_date" name="appointment_date" value="<%= appointment_date %>" min="<%= current_date %>" onChange="this.form.submit()">
+                                        <label for="appointment_date">Date</label>
+                                    </div>
+                                </form>
+                                <!-- Form for creating appointments -->
+                                <form id="create_appointment_form" method="POST" enctype="application/x-www-form-urlencoded" action="/appointments/store">
+                                    <!-- Hidden date field which keeps above input date : used for saving of form data -->
+                                    <input type="hidden" class="form-control mb-3" type="date" id="appointment_date_chosen" name="appointment_date_chosen" value="<%= appointment_date %>" min="<%= current_date %>">
+
+                                    <!-- Time Slots -->
+                                    <% if (timeSlots) { %>
+                                        <div id="time_slots_container" class="form-floating mb-3">
+                                            <!-- First div of time slots (4 elements) -->
+                                            <div>
+                                                <% timeSlots.forEach((slot, index) => { %>
+                                                    <% if (index < 4) { %>
+                                                        <label class="form-check-label btn btn-outline-primary m-2 time-slot <%= created_time_slots && created_time_slots.includes(slot) ? 'time-slot-disabled' : '' %>"> <!-- Check and disable time slot if it is already created for selected date -->
+                                                            <input 
+                                                                class="form-check-input" 
+                                                                type="checkbox" 
+                                                                name="time_slots[]" 
+                                                                value="<%= slot %>"
+                                                                <% if (created_time_slots && created_time_slots.includes(slot)) { %>
+                                                                    checked disabled
+                                                                <% } %>
+                                                            >
+                                                            <span class="apt-time"><%= slot %></span>
+                                                        </label>
+                                                    <% } %>
+                                                <% }) %>
+                                            </div>
+
+                                            <!-- Second div of time slots (5 elements) -->
+                                            <div>
+                                                <% timeSlots.forEach((slot, index) => { %>
+                                                    <% if (index >= 4 && index < 9) { %>
+                                                        <label class="form-check-label btn btn-outline-primary m-2 time-slot <%= created_time_slots && created_time_slots.includes(slot) ? 'time-slot-disabled' : '' %>">
+                                                            <input 
+                                                                class="form-check-input" 
+                                                                type="checkbox" 
+                                                                name="time_slots[]" 
+                                                                value="<%= slot %>"
+                                                                <% if (created_time_slots && created_time_slots.includes(slot)) { %>
+                                                                    checked disabled
+                                                                <% } %>
+                                                            >
+                                                            <span class="apt-time"><%= slot %></span>
+                                                        </label>
+                                                    <% } %>
+                                                <% }) %>
+                                            </div>
+
+                                            <!-- Third div of time slots (2 elements) -->
+                                            <div>
+                                                <% timeSlots.forEach((slot, index) => { %>
+                                                    <% if (index >= 9) { %>
+                                                        <label class="form-check-label btn btn-outline-primary m-2 time-slot <%= created_time_slots && created_time_slots.includes(slot) ? 'time-slot-disabled' : '' %>">
+                                                            <input 
+                                                                class="form-check-input"
+                                                                type="checkbox"
+                                                                name="time_slots[]"
+                                                                value="<%= slot %>"
+                                                                <% if (created_time_slots && created_time_slots.includes(slot)) { %>
+                                                                    checked disabled
+                                                                <% } %>
+                                                            >
+                                                            <span class="apt-time"><%= slot %></span>
+                                                        </label>
+                                                    <% } %>
+                                                <% }) %>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                    
+                                    <!-- Save Changes button -->
+                                    <div class="text-center form-button save-apt">
+                                        <button class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" type="submit">Save Changes</button>
+                                    </div>
+                                </form>
+
+                                <!-- Appointment creation message -->
+                                <% if (appointment_creation_message) { %>
+                                    <div class="text-center appointments-save-confirmation-msg">
+                                        <%= appointment_creation_message %>
+                                        <img src="/assets/confirmation-icon.png" />
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Footer-->
+        <%- include('layouts/footer') -%>
+        <%- include('layouts/scripts') -%>
+    </body>
+</html>
