@@ -121,13 +121,13 @@
                     </div>
                 </div>
             </section>
-
+            <!-- Section for candidate results -->
             <section class="py-5">
-                <div class="container px-5">
-                    <div class="bg-light rounded-4 py-5 px-4 px-md-5">
+                <div class="container px-5" id="candidate-results-container">
+                    <div class="bg-light rounded-4 py-5 px-4 px-md-5" id="candidate-results-desc">
                         <div class="text-center mb-5">
                             <h1 class="fw-bolder"><span class="text-gradient d-inline">Candidates Results</span></h1>
-                            <p class="lead fw-normal text-muted mb-0">List of candidates who have passed or failed their appointments.</p>
+                            <p class="lead fw-normal text-muted mb-0 candidates-list-desc">List of candidates who have passed or failed their appointments.</p>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered">
@@ -140,26 +140,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% const candidates = [
-                                        { name: 'John Doe', date: '2024-07-01', result: 'Pass', comments: 'Great performance' },
-                                        { name: 'Jane Smith', date: '2024-07-02', result: 'Fail', comments: 'Needs improvement' },
-                                        { name: 'Alice Johnson', date: '2024-07-03', result: 'Pass', comments: 'Excellent skills' },
-                                        { name: 'Bob Brown', date: '2024-07-04', result: 'Fail', comments: 'Could do better' }
-                                    ]; %>
-                                    <% candidates.forEach(candidate => { %>
-                                    <tr>
-                                        <td><%= candidate.name %></td>
-                                        <td><%= new Date(candidate.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
-                                        <td>
-                                            <% if (candidate.result === 'Pass') { %>
-                                                <span class="text-success"><i class="bi bi-check-circle"></i> Pass</span>
-                                            <% } else { %>
-                                                <span class="text-danger"><i class="bi bi-x-circle"></i> Fail</span>
-                                            <% } %>
-                                        </td>
-                                        <td><%= candidate.comments %></td>
-                                    </tr>
-                                    <% }) %>
+                                    <!-- Display candidates list -->
+                                    <% if (candidateResults) { %>
+                                        <% candidateResults.forEach(candidate => { %>
+                                            <tr>
+                                                <td><%= candidate.candidateName %></td>
+                                                <td><%= new Date(candidate.appointmentDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
+                                                <td>
+                                                    <% if (candidate.isPass) { %>
+                                                        <span class="text-success"><i class="bi bi-check-circle"></i>&nbsp;&nbsp;&nbsp;Pass</span>
+                                                    <% } else { %>
+                                                        <span class="text-danger"><i class="bi bi-x-circle"></i>&nbsp;&nbsp;&nbsp;Fail</span>
+                                                    <% } %>
+                                                </td>
+                                                <td><%= candidate.comments %></td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } %>
                                 </tbody>
                             </table>
                         </div>

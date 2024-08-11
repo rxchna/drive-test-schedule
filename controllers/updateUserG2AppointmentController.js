@@ -16,9 +16,7 @@ module.exports = async (req, res) => {
             { 
                 $set: { 
                     'appointment.appointment_id': updatedAppointment._id,
-                    'appointment.testType': 'G2',
-                    // 'appointment.isPass': updatedAppointment.isPass,
-                    // 'appointment.comment': updatedAppointment.comment todo remove
+                    'appointment.testType': 'G2'
                 }
             },
             { new: true }

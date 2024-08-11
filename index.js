@@ -68,6 +68,7 @@ const updateUserGAppointmentController = require("./controllers/updateUserGAppoi
 const getBookedAppointmentsController = require("./controllers/getBookedAppointmentsController");
 const filterCandidatesTestTypeController = require("./controllers/filterCandidatesTestTypeController");
 const getDriverDetailsController = require("./controllers/getDriverDetailsController");
+const updateDriverCandidateResultController = require("./controllers/updateDriverCandidateResultController");
 
 // Middleware
 const validateRegistration = require("./middleware/validateRegistrationMiddleware");
@@ -77,6 +78,7 @@ const validateGFormMiddleware = require("./middleware/validateGMiddleware");
 const validateG2AppointmentMiddleware = require("./middleware/validateG2AppointmentMiddleware");
 const validateGAppointmentMiddleware = require("./middleware/validateGAppointmentMiddleware");
 const validateStoreAppointmentsMiddleware = require("./middleware/validateStoreAppointmentsMiddleware");
+const validateExaminerInputMiddleware = require("./middleware/validateExaminerInputMiddleware");
 
 /* Middleware to protect pages from being accessed by users not logged in -> redirect to dashboard */
 const authMiddleware = require("./middleware/authMiddleware");
@@ -87,6 +89,9 @@ const authDriverMiddleWare = require("./middleware/authDriverMiddleware");
 /* Middleware to protect pages from being accessed by users not of type admin -> redirect to dashboard */
 const authAdminMiddleWare = require("./middleware/authAdminMiddleware");
 
+/* Middleware to protect pages from being accessed by users not of type admin -> redirect to dashboard */
+const authExaminerMiddleWare = require("./middleware/authExaminerMiddleware");
+
 /* Middleware to prevent login or register if user is already logged in -> redirect to dashboard */
 const redirectIfAuthMiddleware = require("./middleware/redirectIfAuthMiddleware");
 
@@ -96,7 +101,7 @@ app.get('/dashboard', dashboardController);
 app.get('/g_test', authMiddleware, authDriverMiddleWare, gPageController);
 app.get('/g2_test', authMiddleware, authDriverMiddleWare, g2PageController);
 app.get('/appointment', authMiddleware, authAdminMiddleWare, appointmentPageController);
-app.get('/examiner', examinerPageController);
+app.get('/examiner', authMiddleware, authExaminerMiddleWare, examinerPageController);
 app.get('/login', redirectIfAuthMiddleware, loginPageController);
 app.get('/register', redirectIfAuthMiddleware, registerPageController);
 
@@ -128,7 +133,7 @@ app.post('/userAppointmentDate/loadTimeSlots', loadG2TimeSlotsController);
 app.post('/appointments/updateG2Appointment', validateG2AppointmentMiddleware, updateUserG2AppointmentController);
 
 /* Method to save user appointment for g */
-app.post('/appointments/updateGAppointment', validateGAppointmentMiddleware, updateUserGAppointmentController); //todo middleware
+app.post('/appointments/updateGAppointment', validateGAppointmentMiddleware, updateUserGAppointmentController);
 
 /* Method to retrieve all appointments */
 app.get('/appointments/load', getBookedAppointmentsController);
@@ -136,7 +141,11 @@ app.get('/appointments/load', getBookedAppointmentsController);
 /* Method to filter list of canditates by their appointment type (G or G2 or both) */
 app.get('/candidatesList/filter', filterCandidatesTestTypeController);
 
+/* Method to get and display driver details when examiner selects a driver */
 app.post('/candidates/getDriverDetails', getDriverDetailsController);
+
+/* Method to update result of driver by examiner */
+app.post('/candidates/updateStatus', validateExaminerInputMiddleware, updateDriverCandidateResultController);
 
 /* Render "404 not found" page for unrecognized route */
 app.use((req, res) => res.render('not_found'));

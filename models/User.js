@@ -81,7 +81,7 @@ const UserModelSchema = new Schema({
         },
         isPass: {
             type: Boolean,
-            default: false
+            default: null
         },
         comment: {
             type: String,

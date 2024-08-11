@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         }
 
         // Check if user has already booked an appointment
-        if(user.appointment?.appointment_id) {
+        if(user.appointment?.appointment_id && user.appointment?.isPass == null) {
             // Get appointment details
             const appointment = await AppointmentModel.findById(user.appointment.appointment_id);
 

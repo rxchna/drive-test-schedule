@@ -26,6 +26,7 @@
                             </div>
                         </form>
 
+                        <!-- Table with driver details -->
                         <form method="POST" action="/candidates/getDriverDetails">
                             <div class="table-responsive mt-4">
                                 <table class="table table-bordered">
@@ -41,7 +42,11 @@
                                     <tbody>
                                         <% driverAppointmentDetails.forEach(detail => { %>
                                         <tr>
-                                            <td class="row-radio"><input type="radio" name="selectedDriverID" value="<%= detail.driverID %>" onchange="this.form.submit()" /></td>
+                                            <td class="row-radio">
+                                                <input type="radio" name="selectedDriverID" value="<%= detail.driverID %>" 
+                                                    <% if (selectedDriverID === detail.driverID.toString()) { %> checked <% } %> 
+                                                    onchange="this.form.submit()" />
+                                            </td>
                                             <td><%= detail.name %></td>
                                             <td><%= detail.testType %></td>
                                             <td><%= new Date(detail.appointmentDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
@@ -53,17 +58,83 @@
                             </div>
                         </form>
                     </div>
-                    <% if (isDriverSelected) { %>
+
+                    <!-- Driver Details if selected -->
+                    <% if (selectedDriverID) { %>
                         <div class="bg-light rounded-4 py-5 px-4 px-md-5" id="driver-details-container">
-                            <div class="card-body" id="g2_appointment_header">
-                                <div class="form-floating mb-4">
-                                    <h3 class="text-gradient fw-bolder mb-4">Appointment</h3>
-                                </div>
-                                <form>
-                                    123
-                                </form>
+                            <div class="card-body" id="driver-performance-header">
+                                <% if(isDriverUpdated) { %>
+                                    <div class="record-updated-container text-center">
+                                        Record Updated
+                                        <img src="/assets/confirmation-icon.png" />
+                                    </div>
+                                <% } else { %>
+                                    <form method="POST" action="/candidates/updateStatus">
+                                        <div class="form-floating mb-4">
+                                            <h3 class="text-gradient fw-bolder mb-4">Driver Details</h3>
+                                        </div>
+                                        <!-- Hidden fields for maintaining filter and selected driver -->
+                                        <input type="hidden" name="filterTestType" value="<%= filterTestType %>" />
+                                        <input type="hidden" name="selectedDriverID" value="<%= selectedDriverID %>" />
+                                        
+                                        <% if (driver) { %>
+                                            <% if (saveErrorMessage) { %>
+                                                <div class="text-center appointments-error-msg">
+                                                    <%= saveErrorMessage %>
+                                                    <img src="/assets/error-icon.png" />
+                                                </div>
+                                            <% } %>
+                                            <!-- Driver's Name -->
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="fullname" name="fullname" type="text" placeholder="Fullname..." value="<%= (driver?.firstname && driver?.lastname) ? `${driver?.firstname} ${driver?.lastname}`.trim() : '' %>" disabled />
+                                                <label for="fullname">Driver's Name</label>
+                                            </div>
+                                            <!-- Car -->
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="car_make_model" name="car_make_model" type="text" placeholder="Car make..." value="<%= (driver?.car_details?.car_make && driver?.car_details?.car_model) ? `${driver.car_details.car_make} - ${driver?.car_details?.car_model}`.trim() : '' %>" disabled />
+                                                <label for="car_make_model">Driver's Car</label>
+                                            </div>
+                                            <!-- Plate Number -->
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="car_plate_no" name="car_plate_no" type="text" placeholder="Car plate number..." value="<%= driver?.car_details?.car_plate_no ? driver.car_details.car_plate_no : '' %>" disabled />
+                                                <label for="car_plate_no">Driver's Car Plate Number</label>
+                                            </div>
+
+                                            <!-- Results -->
+                                            <div class="form-floating mb-4" id="performance-section">
+                                                <h3 class="text-gradient fw-bolder mb-4">Performance Results</h3>
+                                            </div>
+                                            <!-- Outcome -->
+                                            <div class="form-floating mb-3">
+                                                <div class="form-label">Outcome: </div>
+                                                <div class="outcome-results">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="outcome" id="pass" value="pass" <% if (driver.appointment.isPass) { %> checked <% } %> />
+                                                        <label class="form-check-label" for="pass">
+                                                            Pass
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="outcome" id="fail" value="fail" <% if (!driver.appointment.isPass) { %> checked <% } %> />
+                                                        <label class="form-check-label" for="fail">
+                                                            Fail
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Comments -->
+                                            <div class="form-floating mb-3">
+                                                <textarea class="form-control" id="comments" name="comments" placeholder="Enter comments here..." style="height: 100px;"></textarea>
+                                                <label for="comments">Comments</label>
+                                            </div>
+                                            <div class="text-center p-5 submit-button">
+                                                <button class="btn btn-primary btn-lg px-5 py-3 fs-6 fw-bolder" type="submit">Save</button>
+                                            </div>
+                                        <% } %>
+                                    </form>
+                                <% } %>
                             </div>
-                            
                         </div>
                     <% } %>
                 </div>

@@ -1,4 +1,5 @@
 const AppointmentModel = require('../models/Appointment');
+const UserModel = require('../models/User');
 
 module.exports = async (req, res) => {
 
@@ -21,7 +22,32 @@ module.exports = async (req, res) => {
         // Create array with only time slots of selected date
         created_time_slots = created_appointment_time_slots.map(created_appointment_time_slots => created_appointment_time_slots.time);
     }
-    
+
+    // Get list of candidates who passed or failed their tests
+    const candidates = await UserModel.find({
+        'appointment.isPass' : { $ne: null }
+    });
+
+    // Get appointment date of each candidate
+    const candidateResults = [];
+    for(let candidate of candidates) {
+        // Find appointment
+        const appointment = await AppointmentModel.findById(candidate.appointment.appointment_id);
+
+        if(appointment) {
+            // Add candidate details + appointment date
+            candidateResults.push({
+                candidateID: candidate._id,
+                candidateName: `${candidate.firstname} ${candidate.lastname}`,
+                appointmentDate: appointment.date,
+                isPass: candidate.appointment.isPass,
+                comments: candidate.appointment.comment
+            })
+        }
+    }
+
+    console.log("#rp: ", candidateResults);
+
     // Pass time slots on rendering
     res.render('appointment', {
         appointment_date: now,
@@ -29,6 +55,7 @@ module.exports = async (req, res) => {
         timeSlots,
         created_time_slots,
         appointment_creation_message: '',
-        appointment_error_message: ''
+        appointment_error_message: '',
+        candidateResults
     });
 }

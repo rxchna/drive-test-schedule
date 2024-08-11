@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
                 'appointment.testType': filterTestType ? filterTestType : { $exists: true }  // Apply filter
             });
 
-            if (driver != null) {
+            if (driver != null && driver.appointment.isPass == null) {
                 // Add driver's details with their appointment details to the array
                 driverAppointmentDetails.push({
                     driverID: driver._id,
@@ -43,7 +43,10 @@ module.exports = async (req, res) => {
         res.render('examiner', { 
             driverAppointmentDetails,
             filterTestType,
-            isDriverSelected: false
+            selectedDriverID: false,
+            driver: '',
+            isDriverUpdated: false,
+            saveErrorMessage: ''
         });
 
     } catch (error) {
