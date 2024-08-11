@@ -124,11 +124,11 @@ h1, .h1 {
   font-size: calc(1.375rem + 1.5vw);
 }
 
-#sign-in-up-main-container, #not-found-container, #appointment_creation_container {
+#sign-in-up-main-container, #not-found-container, #appointment_creation_container, #examiner_main_container {
   margin-top: 2em !important;
 }
 
-#login-container, #register-container, #error-404-container, #apt-container {
+#login-container, #register-container, #error-404-container, #apt-container, #examiner-container, #driver-details-container {
   padding-top: 3rem !important;
   margin-top: 3r;
 }
@@ -156,6 +156,10 @@ h1, .h1 {
 .logged-out-header {
   margin-top: 0.3em;
   margin-bottom: 1em;
+}
+
+#driver-details-container {
+  margin-top: 2em;
 }
 
 @media (min-width: 1200px) {
@@ -345,6 +349,22 @@ mark, .mark {
   border-color: transparent;
 }
 
+.filter-form {
+  display: grid;
+  grid-template-columns: auto 20%;
+  align-items: center;
+  column-gap: 1em;
+  /* justify-items: center; */
+}
+
+.filter-form label {
+  justify-self: end;
+}
+
+.row-radio {
+  width: 2em;
+}
+
 @media (max-width: 1399px) {
   .profile {
     margin-top: 5vw !important;
@@ -442,7 +462,7 @@ hr {
   margin-bottom: 1.8em !important;
 }
 
-.create-appointment {
+.create-appointment, .candidates-list-desc {
   margin-top: 1em;
 }
 
@@ -523,7 +543,7 @@ hr {
   width: 100vw;
 } */
 
-.g2-time-slot-fieldset {
+.g2-g-time-slot-fieldset {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 0.5em;
@@ -531,7 +551,7 @@ hr {
   padding-bottom: 1.5em;
 }
 
-.g2-time-slot-fieldset legend {
+.g2-g-time-slot-fieldset legend {
   padding: 0 10px;
   float: none;
   width: auto;
@@ -539,7 +559,7 @@ hr {
   font-size: 0.9em;
 }
 
-.g2-no-time-slots-available {
+.g2-g-no-time-slots-available {
   color: orange;
   padding: 1em 0.5em;
 }

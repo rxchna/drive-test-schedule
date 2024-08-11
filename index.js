@@ -19,6 +19,7 @@ const SECRET_SESSION_KEY = process.env.SECRET;
 global.isLoggedIn = null;
 global.isTypeDriver = null;
 global.isTypeAdmin = null;
+global.isTypeExaminer = null;
 global.userType = null
 
 const app = new express();
@@ -35,6 +36,7 @@ app.use("*", (req, res, next) => {
     isLoggedIn = req.session.userId;
     isTypeDriver = req.session.userType === "type-driver";
     isTypeAdmin = req.session.userType === "type-admin";
+    isTypeExaminer = req.session.userType === "type-examiner";
     next();
 })
 
@@ -51,6 +53,7 @@ const g2PageController = require("./controllers/g2PageController");
 const loginPageController = require("./controllers/loginPageController");
 const registerPageController = require("./controllers/registerPageController");
 const appointmentPageController = require("./controllers/appointmentPageController");
+const examinerPageController = require("./controllers/examinerPageController");
 
 const registerUserController = require("./controllers/registerUserController");
 const loginUserController = require("./controllers/loginUserController");
@@ -61,6 +64,10 @@ const loadTimeSlotsController = require("./controllers/loadTimeSlotsController")
 const storeAppointmentsController = require("./controllers/storeAppointmentsController");
 const loadG2TimeSlotsController = require("./controllers/loadG2TimeSlotsController");
 const updateUserG2AppointmentController = require("./controllers/updateUserG2AppointmentController");
+const updateUserGAppointmentController = require("./controllers/updateUserGAppointmentController");
+const getBookedAppointmentsController = require("./controllers/getBookedAppointmentsController");
+const filterCandidatesTestTypeController = require("./controllers/filterCandidatesTestTypeController");
+const getDriverDetailsController = require("./controllers/getDriverDetailsController");
 
 // Middleware
 const validateRegistration = require("./middleware/validateRegistrationMiddleware");
@@ -68,6 +75,7 @@ const validateLoginMiddleware = require("./middleware/validateLoginMiddleware");
 const validateG2FormMiddleware = require("./middleware/validateG2Middleware");
 const validateGFormMiddleware = require("./middleware/validateGMiddleware");
 const validateG2AppointmentMiddleware = require("./middleware/validateG2AppointmentMiddleware");
+const validateGAppointmentMiddleware = require("./middleware/validateGAppointmentMiddleware");
 const validateStoreAppointmentsMiddleware = require("./middleware/validateStoreAppointmentsMiddleware");
 
 /* Middleware to protect pages from being accessed by users not logged in -> redirect to dashboard */
@@ -88,6 +96,7 @@ app.get('/dashboard', dashboardController);
 app.get('/g_test', authMiddleware, authDriverMiddleWare, gPageController);
 app.get('/g2_test', authMiddleware, authDriverMiddleWare, g2PageController);
 app.get('/appointment', authMiddleware, authAdminMiddleWare, appointmentPageController);
+app.get('/examiner', examinerPageController);
 app.get('/login', redirectIfAuthMiddleware, loginPageController);
 app.get('/register', redirectIfAuthMiddleware, registerPageController);
 
@@ -117,6 +126,17 @@ app.post('/userAppointmentDate/loadTimeSlots', loadG2TimeSlotsController);
 
 /* Method to save user appointment for g2 */
 app.post('/appointments/updateG2Appointment', validateG2AppointmentMiddleware, updateUserG2AppointmentController);
+
+/* Method to save user appointment for g */
+app.post('/appointments/updateGAppointment', validateGAppointmentMiddleware, updateUserGAppointmentController); //todo middleware
+
+/* Method to retrieve all appointments */
+app.get('/appointments/load', getBookedAppointmentsController);
+
+/* Method to filter list of canditates by their appointment type (G or G2 or both) */
+app.get('/candidatesList/filter', filterCandidatesTestTypeController);
+
+app.post('/candidates/getDriverDetails', getDriverDetailsController);
 
 /* Render "404 not found" page for unrecognized route */
 app.use((req, res) => res.render('not_found'));

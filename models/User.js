@@ -70,9 +70,23 @@ const UserModelSchema = new Schema({
         }
     },
     /* Appointment details */
-    g2_appointment_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Appointment'
+    appointment: {
+        appointment_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Appointment'
+        },
+        testType: {
+            type: String,
+            default: ''
+        },
+        isPass: {
+            type: Boolean,
+            default: false
+        },
+        comment: {
+            type: String,
+            default: ''
+        }
     }
 });
 
