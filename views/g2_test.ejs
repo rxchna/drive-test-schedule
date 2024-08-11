@@ -13,6 +13,18 @@
                 </div>
                 <!-- G2 User Details Form -->
                 <div class="row gx-5 justify-content-center" id="g2-form-container">
+                    <!-- <div class="card shadow border-0 rounded-4 mb-5"> todo result pass later
+                        <section class="card-body p-5 text-center">
+                            <h3 class="text-primary fw-bolder mb-4">DriveTest Result</h3>
+                            <div class="mb-3">
+                                <span class="fw-bold">Status:</span> <span class="text-success">PASS</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="fw-bold">Examiner's Comments:</span>
+                                <p class="text-muted">Congratulations</p>
+                            </div>
+                        </section>
+                    </div> -->
                     <div class="col-lg-11 col-xl-9 col-xxl-8">
                         <form class="g_g2_form" method="POST" enctype="application/x-www-form-urlencoded" action="/users/store">
                             <div class="card shadow border-0 rounded-4 mb-5">
@@ -111,7 +123,8 @@
                                             <div>
                                                 <img src="/assets/appointment-booked-icon.png" />
                                             </div>
-                                            Your appointment is booked for <%= appointment_date %> at <%= appointmentTimeBooked %>.
+                                            Your G2 appointment is booked for <%= appointment_date %> at <%= appointmentTimeBooked %>.
+                                            <!-- Result if any TODO allow re-enter -->
                                         </div>
                                     </section>
                                 <% } else { %>
@@ -139,7 +152,7 @@
 
                                             <!-- Time Slots for selected date -->
                                             <% if (available_time_slots) { %>
-                                                <fieldset class="g2-time-slot-fieldset">
+                                                <fieldset class="g2-g-time-slot-fieldset">
                                                     <legend>Select your preferred time slot</legend>
                                                     <% available_time_slots.forEach((slot, index) => { %>
                                                         <label class="form-check-label btn btn-outline-primary m-2 time-slot">
@@ -149,7 +162,7 @@
                                                     <% }) %>
                                                 </fieldset>
                                             <% } else { %>
-                                                <div class="g2-no-time-slots-available">No time slots available for the selected date. Please choose a different date.</div>
+                                                <div class="g2-g-no-time-slots-available">No time slots available for the selected date. Please choose a different date.</div>
                                             <% } %>
                                         </section>
                                         <div class="text-center p-5 submit-button">

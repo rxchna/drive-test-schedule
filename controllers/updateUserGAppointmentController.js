@@ -14,27 +14,24 @@ module.exports = async (req, res) => {
         // Update appointment_id of user
         const updatedUser = await UserModel.findByIdAndUpdate(req.session.userId,
             { 
-                $set: { 
+                $set: {  // $set? todo
                     'appointment.appointment_id': updatedAppointment._id,
-                    'appointment.testType': 'G2',
-                    // 'appointment.isPass': updatedAppointment.isPass,
-                    // 'appointment.comment': updatedAppointment.comment todo remove
+                    'appointment.testType': 'G'
                 }
             },
             { new: true }
         );
 
-
-        // Render G2 page
-        res.render('g2_test', {
+        // Render G page
+        res.render('g_test', {
             user: updatedUser,
             errorMessage: '',
-            firstUserInput: false,
+            isG2Passed: true,
+            appointmentTimeBooked: updatedAppointment.time,
             appointment_date: req.body.user_appointment_date,
-            current_date: '',
-            available_time_slots: '',
             appointment_booking_error: '',
-            appointmentTimeBooked: updatedAppointment.time
+            current_date: '',
+            available_time_slots: ''
         });
         
     } catch (error) {

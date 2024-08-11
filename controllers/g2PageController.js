@@ -15,9 +15,9 @@ module.exports = async (req, res) => {
         }
 
         // Check if user has already booked an appointment
-        if(user.g2_appointment_id != null) {
+        if(user.appointment?.appointment_id) {
             // Get appointment details
-            const appointment = await AppointmentModel.findById(user.g2_appointment_id);
+            const appointment = await AppointmentModel.findById(user.appointment.appointment_id);
 
             // Render G2 page
             res.render('g2_test', {

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('layouts/header') -%>
+    <body class="d-flex flex-column">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <%- include('layouts/navbar') -%>
+            <!-- Page content-->
+            <section class="py-5">
+                <div class="container px-5" id="examiner_main_container">
+                    <div class="bg-light rounded-4 py-5 px-4 px-md-5" id="examiner-container">
+                        <div class="text-center mb-5">
+                            <h1 class="fw-bolder"><span class="text-gradient d-inline">List of Candidates</span></h1>
+                            <p class="lead fw-normal text-muted mb-0 candidates-list-desc">List of candidates who have booked G2 or G appointments.</p>
+                        </div>
+
+                        <!-- Filter Form -->
+                        <form method="GET" action="/candidatesList/filter">
+                            <div class="mb-3 filter-form">
+                                <label for="testType">Filter by Test Type</label>
+                                <select id="testType" name="testType" class="form-select" onchange="this.form.submit()">
+                                    <option value="">All</option>
+                                    <option value="G" <%= filterTestType === 'G' ? 'selected' : '' %>>G</option>
+                                    <option value="G2" <%= filterTestType === 'G2' ? 'selected' : '' %>>G2</option>
+                                </select>
+                            </div>
+                        </form>
+
+                        <form method="POST" action="/candidates/getDriverDetails">
+                            <div class="table-responsive mt-4">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Driver</th>
+                                            <th>Appointment Type</th>
+                                            <th>Appointment Date</th>
+                                            <th>Time Slot</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% driverAppointmentDetails.forEach(detail => { %>
+                                        <tr>
+                                            <td class="row-radio"><input type="radio" name="selectedDriverID" value="<%= detail.driverID %>" onchange="this.form.submit()" /></td>
+                                            <td><%= detail.name %></td>
+                                            <td><%= detail.testType %></td>
+                                            <td><%= new Date(detail.appointmentDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
+                                            <td><%= detail.appointmentTime %></td>
+                                        </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                    <% if (isDriverSelected) { %>
+                        <div class="bg-light rounded-4 py-5 px-4 px-md-5" id="driver-details-container">
+                            <div class="card-body" id="g2_appointment_header">
+                                <div class="form-floating mb-4">
+                                    <h3 class="text-gradient fw-bolder mb-4">Appointment</h3>
+                                </div>
+                                <form>
+                                    123
+                                </form>
+                            </div>
+                            
+                        </div>
+                    <% } %>
+                </div>
+            </section>
+        </main>
+        <!-- Footer-->
+        <%- include('layouts/footer') -%>
+        <%- include('layouts/scripts') -%>
+    </body>
+</html>
