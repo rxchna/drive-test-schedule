@@ -116,17 +116,53 @@
                                         <h3 class="text-gradient fw-bolder mb-4">Appointment</h3>
                                     </div>
                                 </div>
+                                <% if (user.appointment?.testType == 'G') { %> <!-- todo to test -->
+                                    <!-- Display G2 results passed -->
+                                    <section class="card-body p-5 text-center" id="g2-appointment-information">
+                                        <div class="appointment-info-container">
+                                            <div>
+                                                G2 passed! <img src="/assets/confirmation-icon.png" />
+                                            </div>
+                                            <div>
+                                                You are eligible to schedule your G test.
+                                            </div>
+                                        </div>
+                                    </section>
                                 <!-- Appointment Date Selection form -->
-                                <% if (appointmentTimeBooked) { %>
+                                <% } else if (appointmentTimeBooked && user.appointment?.isPass == null) { %>
                                     <section class="card-body p-5 text-center" id="g2-appointment-information">
                                         <div class="appointment-info-container">
                                             <div>
                                                 <img src="/assets/appointment-booked-icon.png" />
                                             </div>
                                             Your G2 appointment is booked for <%= appointment_date %> at <%= appointmentTimeBooked %>.
-                                            <!-- Result if any TODO allow re-enter -->
                                         </div>
                                     </section>
+                                <!-- Show G2 test result -->
+                                <% } else if (user.appointment?.isPass) { %>
+                                    <!-- Display G2 results passed -->
+                                    <section class="card-body p-5 text-center" id="g2-appointment-information">
+                                        <div class="appointment-info-container test-passed">
+                                            <div>
+                                                <img src="/assets/confirmation-icon.png" />
+                                            </div>
+                                            <div class="results-container">
+                                                <div>
+                                                    Result
+                                                </div>
+                                                <div class="positive-feedback">
+                                                    Pass
+                                                </div>
+                                                <div>
+                                                    Examiner comments
+                                                </div>
+                                                <div class="positive-feedback">
+                                                    <%= user.appointment?.comment ? user.appointment.comment.trim() : 'No comments available' %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                <!-- Appointment Date Selection form -->
                                 <% } else { %>
                                     <% if (appointment_booking_error) { %>
                                         <!-- Section to display error on saving appointment -->
@@ -134,12 +170,36 @@
                                             <%= appointment_booking_error %>
                                         </div>
                                     <% } %>
+                                    <!-- Display results of user if failed + appointment form to reschedule G2 -->
+                                    <% if (user.appointment?.isPass != null && !user.appointment?.isPass) { %>
+                                        <!-- Section to display error on saving appointment -->
+                                        <section class="card-body p-5 text-center" id="g2-appointment-information">
+                                            <div class="appointment-info-container test-passed">
+                                                <div class="results-container">
+                                                    <div>
+                                                        Result
+                                                    </div>
+                                                    <div class="negative-feedback">
+                                                        Fail
+                                                    </div>
+                                                    <div>
+                                                        Examiner comments
+                                                    </div>
+                                                    <div class="negative-feedback">
+                                                        <%= user.appointment?.comment ? user.appointment.comment.trim() : 'No comments available' %>
+                                                    </div>
+                                                </div>
+                                                <div class="lead fw-normal text-muted mb-0 result-failed-desc">Please pick a new appointment time to reschedule your G2.</div>
+                                            </div>
+                                        </section>
+                                    <% } %>
+                                    <!-- Appointment Date Selection -->
                                     <form id="g2_date_input_form" method="POST" enctype="application/x-www-form-urlencoded" action="/userAppointmentDate/loadTimeSlots">
                                         <!-- Appointment Input Date -->
                                         <section class="card-body p-5" id="g2_app_main_date_input">
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="user_appointment_date" name="user_appointment_date" type="date" placeholder="Enter date..." value="<%= appointment_date %>" min="<%= current_date %>" onChange="this.form.submit()" />
-                                                <label for="car_details[car_make]">Appointment Date</label>
+                                                <label for="user_appointment_date">Appointment Date</label>
                                             </div>
                                         </section>
                                     </form>

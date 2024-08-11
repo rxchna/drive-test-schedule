@@ -81,7 +81,7 @@ module.exports = async (req, res) => {
                     isG2Passed: false,
                     appointmentTimeBooked: false,
                     appointment_date: now,
-                    appointment_booking_error: 'You are not elligible to book your G test until G2 is completed successfully.',
+                    appointment_booking_error: 'You are not eligible to book your G test until G2 is completed successfully.',
                     current_date: now,
                     available_time_slots,
                 });

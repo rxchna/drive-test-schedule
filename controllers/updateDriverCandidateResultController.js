@@ -2,12 +2,23 @@ const UserModel = require("../models/User");
 const AppointmentModel = require("../models/Appointment");
 
 module.exports = async (req, res) => {
-    const selectedDriverID = req.body.selectedDriverID || req.query.selectedDriverID || '';
-    const filterTestType = req.query.testType || ''; 
+    const { filterTestType, selectedDriverID, outcome, comments } = req.body;
 
     try {
-        // Get driver if selectedDriverID exists
-        const driver = selectedDriverID ? await UserModel.findById(selectedDriverID) : null;
+        console.log(req.body);
+
+        const fOutcome = outcome === 'pass';
+
+        // Update driver's appointment status
+        const updatedDriver = await UserModel.findByIdAndUpdate(selectedDriverID, {
+                'appointment.isPass': fOutcome,
+                'appointment.comment': comments
+            }
+        );
+
+        // Render examiner page
+        // Get driver
+        const driver = await UserModel.findById(selectedDriverID);
 
         // Get present date
         const now = new Date().toISOString().split('T')[0];
@@ -46,11 +57,11 @@ module.exports = async (req, res) => {
             filterTestType,
             selectedDriverID,
             driver,
-            isDriverUpdated: false,
+            isDriverUpdated: true,
             saveErrorMessage: ''
         });
 
     } catch (error) {
         console.log(error);
     }
-}
+};

@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
             const driver = await UserModel.findOne({ 'appointment.appointment_id': appointment._id.toString() });
 
             // Show only candidates who have not conducted their tests
-            if (driver != null && !driver.appointment.isPass) {
+            if (driver != null && driver.appointment.isPass == null) {
                 // Add driver's details with their appointment details to the array
                 driverAppointmentDetails.push({
                     driverID: driver._id,
@@ -36,11 +36,13 @@ module.exports = async (req, res) => {
 
         console.log("###rp driver appointment details: ", driverAppointmentDetails);
 
-        // Pass time slots and drivers on rendering
+        // Render examiner page
         res.render('examiner', { 
             driverAppointmentDetails,
             filterTestType: '',
-            isDriverSelected: false
+            selectedDriverID: false,
+            driver: '',
+            saveErrorMessage: ''
         });
 
     } catch (error) {
