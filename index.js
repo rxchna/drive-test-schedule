@@ -64,6 +64,7 @@ const loadTimeSlotsController = require("./controllers/loadTimeSlotsController")
 const storeAppointmentsController = require("./controllers/storeAppointmentsController");
 const loadG2TimeSlotsController = require("./controllers/loadG2TimeSlotsController");
 const updateUserG2AppointmentController = require("./controllers/updateUserG2AppointmentController");
+const loadGTimeSlotsController = require("./controllers/loadGTimeSlotsController");
 const updateUserGAppointmentController = require("./controllers/updateUserGAppointmentController");
 const getBookedAppointmentsController = require("./controllers/getBookedAppointmentsController");
 const filterCandidatesTestTypeController = require("./controllers/filterCandidatesTestTypeController");
@@ -90,7 +91,7 @@ const authDriverMiddleWare = require("./middleware/authDriverMiddleware");
 const authAdminMiddleWare = require("./middleware/authAdminMiddleware");
 
 /* Middleware to protect pages from being accessed by users not of type admin -> redirect to dashboard */
-const authExaminerMiddleWare = require("./middleware/authExaminerMiddleware");
+const authExaminerMiddleWare = require("./middleware/authExaminerMiddleWare");
 
 /* Middleware to prevent login or register if user is already logged in -> redirect to dashboard */
 const redirectIfAuthMiddleware = require("./middleware/redirectIfAuthMiddleware");
@@ -127,10 +128,13 @@ app.post('/appointmentDate/loadTimeSlots', loadTimeSlotsController);
 app.post('/appointments/store', validateStoreAppointmentsMiddleware, storeAppointmentsController);
 
 /* Method to load available time slots for selected date from g2 page */
-app.post('/userAppointmentDate/loadTimeSlots', loadG2TimeSlotsController);
+app.post('/userAppointmentDate/loadG2TimeSlots', loadG2TimeSlotsController);
 
 /* Method to save user appointment for g2 */
 app.post('/appointments/updateG2Appointment', validateG2AppointmentMiddleware, updateUserG2AppointmentController);
+
+/* Method to load available time slots for selected date from g2 page */
+app.post('/userAppointmentDate/loadGTimeSlots', loadGTimeSlotsController);
 
 /* Method to save user appointment for g */
 app.post('/appointments/updateGAppointment', validateGAppointmentMiddleware, updateUserGAppointmentController);

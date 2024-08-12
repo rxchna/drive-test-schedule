@@ -107,8 +107,8 @@
                                             <h3 class="text-gradient fw-bolder mb-4">Appointment</h3>
                                         </div>
                                     </div>
-                                    <!-- Appointment Date Selection form -->
-                                    <% if (appointmentTimeBooked) { %>
+                                    <!-- G Appointment is booked -->
+                                    <% if (appointmentTimeBooked && user.appointment?.isPass == null) { %>
                                         <section class="card-body p-5 text-center" id="g2-appointment-information">
                                             <div class="appointment-info-container">
                                                 <div>
@@ -117,6 +117,31 @@
                                                 Your G appointment is booked for <%= appointment_date %> at <%= appointmentTimeBooked %>.
                                             </div>
                                         </section>
+                                    <!-- G appointment passed -->
+                                    <% } else if (user.appointment?.isPass && user.appointment?.testType == 'G') { %>
+                                        <!-- Display G2 results passed -->
+                                        <section class="card-body p-5 text-center" id="g2-appointment-information">
+                                            <div class="appointment-info-container test-passed">
+                                                <div>
+                                                    <img src="/assets/confirmation-icon.png" />
+                                                </div>
+                                                <div class="results-container">
+                                                    <div>
+                                                        Result
+                                                    </div>
+                                                    <div class="positive-feedback">
+                                                        Pass
+                                                    </div>
+                                                    <div>
+                                                        Examiner comments
+                                                    </div>
+                                                    <div class="positive-feedback">
+                                                        <%= user.appointment?.comment ? user.appointment.comment.trim() : 'No comments available' %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    <!-- Appointment Date Selection form -->
                                     <% } else { %>
                                         <% if (appointment_booking_error) { %>
                                             <!-- Section to display error on saving appointment -->
@@ -124,7 +149,30 @@
                                                 <%= appointment_booking_error %>
                                             </div>
                                         <% } %>
-                                        <form id="g2_date_input_form" method="POST" enctype="application/x-www-form-urlencoded" action="/userAppointmentDate/loadTimeSlots">
+                                        <% if (user.appointment?.isPass != null && !user.appointment?.isPass) { %>
+                                            <!-- Section to display error on saving appointment -->
+                                            <section class="card-body p-5 text-center" id="g2-appointment-information">
+                                                <div class="appointment-info-container test-passed">
+                                                    <div class="results-container">
+                                                        <div>
+                                                            Result
+                                                        </div>
+                                                        <div class="negative-feedback">
+                                                            Fail
+                                                        </div>
+                                                        <div>
+                                                            Examiner comments
+                                                        </div>
+                                                        <div class="negative-feedback">
+                                                            <%= user.appointment?.comment ? user.appointment.comment.trim() : 'No comments available' %>
+                                                        </div>
+                                                    </div>
+                                                    <div class="lead fw-normal text-muted mb-0 result-failed-desc">Please pick a new appointment time to reschedule your G.</div>
+                                                </div>
+                                            </section>
+                                        <% } %>
+                                        <!-- Appointment Date Selection form -->
+                                        <form id="g2_date_input_form" method="POST" enctype="application/x-www-form-urlencoded" action="/userAppointmentDate/loadGTimeSlots">
                                             <!-- Appointment Input Date -->
                                             <section class="card-body p-5" id="g2_app_main_date_input">
                                                 <div class="form-floating mb-3">

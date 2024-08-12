@@ -13,18 +13,6 @@
                 </div>
                 <!-- G2 User Details Form -->
                 <div class="row gx-5 justify-content-center" id="g2-form-container">
-                    <!-- <div class="card shadow border-0 rounded-4 mb-5"> todo result pass later
-                        <section class="card-body p-5 text-center">
-                            <h3 class="text-primary fw-bolder mb-4">DriveTest Result</h3>
-                            <div class="mb-3">
-                                <span class="fw-bold">Status:</span> <span class="text-success">PASS</span>
-                            </div>
-                            <div class="mb-3">
-                                <span class="fw-bold">Examiner's Comments:</span>
-                                <p class="text-muted">Congratulations</p>
-                            </div>
-                        </section>
-                    </div> -->
                     <div class="col-lg-11 col-xl-9 col-xxl-8">
                         <form class="g_g2_form" method="POST" enctype="application/x-www-form-urlencoded" action="/users/store">
                             <div class="card shadow border-0 rounded-4 mb-5">
@@ -116,15 +104,15 @@
                                         <h3 class="text-gradient fw-bolder mb-4">Appointment</h3>
                                     </div>
                                 </div>
-                                <% if (user.appointment?.testType == 'G') { %> <!-- todo to test -->
+                                <% if (user.appointment?.testType == 'G') { %>
                                     <!-- Display G2 results passed -->
                                     <section class="card-body p-5 text-center" id="g2-appointment-information">
                                         <div class="appointment-info-container">
                                             <div>
-                                                G2 passed! <img src="/assets/confirmation-icon.png" />
+                                                <img src="/assets/confirmation-icon.png" />
                                             </div>
                                             <div>
-                                                You are eligible to schedule your G test.
+                                                G2 completed. You are eligible to schedule your G test.
                                             </div>
                                         </div>
                                     </section>
@@ -194,7 +182,7 @@
                                         </section>
                                     <% } %>
                                     <!-- Appointment Date Selection -->
-                                    <form id="g2_date_input_form" method="POST" enctype="application/x-www-form-urlencoded" action="/userAppointmentDate/loadTimeSlots">
+                                    <form id="g2_date_input_form" method="POST" enctype="application/x-www-form-urlencoded" action="/userAppointmentDate/loadG2TimeSlots">
                                         <!-- Appointment Input Date -->
                                         <section class="card-body p-5" id="g2_app_main_date_input">
                                             <div class="form-floating mb-3">

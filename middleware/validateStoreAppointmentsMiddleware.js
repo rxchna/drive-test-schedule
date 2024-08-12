@@ -44,6 +44,7 @@ module.exports = async (req, res, next) => {
                         candidateID: candidate._id,
                         candidateName: `${candidate.firstname} ${candidate.lastname}`,
                         appointmentDate: appointment.date,
+                        appointmentType: candidate.appointment.testType,
                         isPass: candidate.appointment.isPass,
                         comments: candidate.appointment.comment
                     })
