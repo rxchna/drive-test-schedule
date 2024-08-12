@@ -135,6 +135,7 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Date of Appointment</th>
+                                        <th>Appointment Type</th>
                                         <th>Result</th>
                                         <th>Comments</th>
                                     </tr>
@@ -146,6 +147,7 @@
                                             <tr>
                                                 <td><%= candidate.candidateName %></td>
                                                 <td><%= new Date(candidate.appointmentDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
+                                                <td><%= candidate.appointmentType %></td>
                                                 <td>
                                                     <% if (candidate.isPass) { %>
                                                         <span class="text-success"><i class="bi bi-check-circle"></i>&nbsp;&nbsp;&nbsp;Pass</span>

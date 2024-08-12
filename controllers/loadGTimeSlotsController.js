@@ -24,16 +24,16 @@ module.exports = async (req, res) => {
             available_time_slots = available_app_slots.map(available_app_slots => available_app_slots.time);
         }
 
-        // Render G2 page
-        res.render('g2_test', {
+        // Render G page
+        res.render('g_test', {
             user,
             errorMessage: '',
-            firstUserInput: false,
+            isG2Passed: true,
+            appointmentTimeBooked: false,
             appointment_date: appointment_date,
+            appointment_booking_error: '',
             current_date: now,
             available_time_slots,
-            appointment_booking_error: '',
-            appointmentTimeBooked: false
         });
 
     } catch (error) {

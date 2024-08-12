@@ -115,7 +115,7 @@
                                                         </label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="outcome" id="fail" value="fail" <% if (!driver.appointment.isPass) { %> checked <% } %> />
+                                                        <input class="form-check-input" type="radio" name="outcome" id="fail" value="fail" <% if (driver.appointment.isPass != null && !driver.appointment.isPass) { %> checked <% } %> />
                                                         <label class="form-check-label" for="fail">
                                                             Fail
                                                         </label>

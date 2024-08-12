@@ -14,11 +14,10 @@ module.exports = async (req, res) => {
         // Update appointment_id of user
         const updatedUser = await UserModel.findByIdAndUpdate(req.session.userId,
             { 
-                $set: {  // $set? todo
-                    'appointment.appointment_id': updatedAppointment._id,
-                    'appointment.testType': 'G',
-                    'appointment.isPass': null
-                }
+                'appointment.appointment_id': updatedAppointment._id,
+                'appointment.testType': 'G',
+                'appointment.isPass': null,
+                'appointment.comment': ''
             },
             { new: true }
         );

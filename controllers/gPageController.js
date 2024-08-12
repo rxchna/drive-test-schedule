@@ -40,7 +40,9 @@ module.exports = async (req, res) => {
         // Render G page
 
         // Check if user has already booked an appointment
-        if(user.appointment?.appointment_id && user.appointment?.testType == 'G') {
+        if(user.appointment?.appointment_id && 
+            user.appointment?.testType == 'G' && 
+            user.appointment?.isPass == null) {
             // Get appointment details
             const appointment = await AppointmentModel.findById(user.appointment.appointment_id);
 
@@ -59,9 +61,12 @@ module.exports = async (req, res) => {
         else {
             // Render G page
             // Check if user has already booked and passed their G2 test before booking G test
-            if(user.appointment?.appointment_id && 
+            if((user.appointment?.appointment_id && 
                 user.appointment?.testType == 'G2' &&
-                user.appointment?.isPass == true) {
+                user.appointment?.isPass == true) || 
+                (user.appointment?.appointment_id &&
+                user.appointment?.testType == 'G' &&
+                user.appointment?.isPass != null)) {
                     // Render g test with appointment slots
                     res.render('g_test', {
                         user,
